@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useStore } from "@/lib/store";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,9 +9,8 @@ const TOTAL = YEARS * WEEKS_PER_YEAR;
 
 export function LifeCalendar() {
   const { birthDate, setBirthDate, paintedWeeks, togglePaintedWeek } = useStore();
-  const [hydrated, setHydrated] = useState(false);
-  useState(() => {
-    if (typeof window !== "undefined") setHydrated(true);
+
+
   });
 
   const weeksLived = useMemo(() => {
