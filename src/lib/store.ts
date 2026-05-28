@@ -57,12 +57,13 @@ export const useStore = create<State>()(
       deleteNote: (id) => set((s) => ({ notes: s.notes.filter((n) => n.id !== id) })),
     }),
     {
-      name: "memento-mori-store",
       storage: createJSONStorage(() =>
         typeof window !== "undefined"
           ? window.localStorage
-          : ({ getItem: () => null, setItem: () => {}, removeItem: () => {} } as Storage),
+          : (undefined as unknown as Storage),
       ),
     },
+  ),
+);
   ),
 );
