@@ -11,8 +11,6 @@ export function LifeCalendar() {
   const { birthDate, setBirthDate, paintedWeeks, togglePaintedWeek } = useStore();
 
 
-  });
-
   const weeksLived = useMemo(() => {
     if (!birthDate) return 0;
     const b = new Date(birthDate).getTime();
@@ -73,7 +71,6 @@ export function LifeCalendar() {
       <p className="mt-4 text-xs text-muted-foreground">
         Clique em qualquer quadrado vazio para marcá-lo manualmente.
       </p>
-      {!hydrated && null}
     </section>
   );
 }
