@@ -1,45 +1,119 @@
 import { motion } from "framer-motion";
 
+const DURATION = 20;
+
 export function Hourglass() {
   return (
-    <section className="mx-auto flex max-w-6xl flex-col items-center px-4 py-10">
-      <svg viewBox="0 0 120 200" className="h-48 w-auto text-foreground" fill="none">
-        {/* Frame */}
-        <line x1="10" y1="6" x2="110" y2="6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-        <line x1="10" y1="194" x2="110" y2="194" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-        <path d="M20 6 C20 60 100 80 100 100 C100 120 20 140 20 194" stroke="currentColor" strokeWidth="1.5" fill="none" />
-        <path d="M100 6 C100 60 20 80 20 100 C20 120 100 140 100 194" stroke="currentColor" strokeWidth="1.5" fill="none" />
-        {/* Top sand */}
-        <motion.path
-          d="M25 12 C25 55 95 70 95 95 L25 95 Z"
-          fill="currentColor"
-          initial={{ scaleY: 1 }}
-          animate={{ scaleY: [1, 0.55, 1] }}
-          transition={{ duration: 16, repeat: Infinity, ease: "linear" }}
-          style={{ transformOrigin: "60px 12px" }}
-        />
-        {/* Bottom sand */}
-        <motion.path
-          d="M25 188 C25 145 95 130 95 105 L25 105 Z"
-          fill="currentColor"
-          initial={{ scaleY: 0.2 }}
-          animate={{ scaleY: [0.2, 1, 0.2] }}
-          transition={{ duration: 16, repeat: Infinity, ease: "linear" }}
-          style={{ transformOrigin: "60px 188px" }}
-        />
-        {/* Falling sand stream */}
-        <motion.line
-          x1="60"
-          y1="100"
-          x2="60"
-          y2="140"
+    <section className="mx-auto flex max-w-6xl flex-col items-center px-4 py-12">
+      <svg
+        viewBox="0 0 200 320"
+        className="h-64 w-auto text-foreground"
+        fill="none"
+        aria-label="Ampulheta"
+      >
+        <defs>
+          {/* Glass gradient — subtle monochrome shine */}
+          <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="currentColor" stopOpacity="0.06" />
+            <stop offset="45%" stopColor="currentColor" stopOpacity="0.14" />
+            <stop offset="100%" stopColor="currentColor" stopOpacity="0.04" />
+          </linearGradient>
+          {/* Frame cap gradient */}
+          <linearGradient id="cap" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="currentColor" stopOpacity="0.95" />
+            <stop offset="100%" stopColor="currentColor" stopOpacity="0.7" />
+          </linearGradient>
+          {/* Clip for top bulb sand */}
+          <clipPath id="topBulb">
+            <path d="M40 40 C40 110 95 130 95 155 L105 155 C105 130 160 110 160 40 Z" />
+          </clipPath>
+          {/* Clip for bottom bulb sand */}
+          <clipPath id="bottomBulb">
+            <path d="M40 280 C40 210 95 190 95 165 L105 165 C105 190 160 210 160 280 Z" />
+          </clipPath>
+        </defs>
+
+        {/* Top cap */}
+        <ellipse cx="100" cy="20" rx="78" ry="10" fill="url(#cap)" />
+        <rect x="22" y="20" width="156" height="14" rx="3" fill="url(#cap)" />
+        <ellipse cx="100" cy="34" rx="78" ry="6" fill="currentColor" opacity="0.85" />
+
+        {/* Side pillars */}
+        <rect x="20" y="30" width="6" height="260" rx="3" fill="currentColor" opacity="0.9" />
+        <rect x="174" y="30" width="6" height="260" rx="3" fill="currentColor" opacity="0.9" />
+
+        {/* Bottom cap */}
+        <ellipse cx="100" cy="286" rx="78" ry="6" fill="currentColor" opacity="0.85" />
+        <rect x="22" y="286" width="156" height="14" rx="3" fill="url(#cap)" />
+        <ellipse cx="100" cy="300" rx="78" ry="10" fill="url(#cap)" />
+
+        {/* Glass bulbs (background) */}
+        <path
+          d="M40 40 C40 110 95 145 95 160 C95 175 40 210 40 280
+             L160 280 C160 210 105 175 105 160 C105 145 160 110 160 40 Z"
+          fill="url(#glass)"
           stroke="currentColor"
+          strokeOpacity="0.45"
+          strokeWidth="1.2"
+        />
+
+        {/* Top sand — drains over DURATION */}
+        <g clipPath="url(#topBulb)">
+          <motion.rect
+            x="40"
+            width="120"
+            fill="currentColor"
+            initial={{ y: 40, height: 115 }}
+            animate={{ y: [40, 150], height: [115, 5] }}
+            transition={{ duration: DURATION, repeat: Infinity, ease: "linear" }}
+          />
+        </g>
+
+        {/* Bottom sand — fills over DURATION (mound shape via path mask) */}
+        <g clipPath="url(#bottomBulb)">
+          <motion.rect
+            x="40"
+            width="120"
+            fill="currentColor"
+            initial={{ y: 275, height: 5 }}
+            animate={{ y: [275, 175], height: [5, 105] }}
+            transition={{ duration: DURATION, repeat: Infinity, ease: "linear" }}
+          />
+          {/* Mound curve on top of bottom sand */}
+          <motion.ellipse
+            cx="100"
+            rx="55"
+            ry="10"
+            fill="currentColor"
+            initial={{ cy: 275 }}
+            animate={{ cy: [275, 175] }}
+            transition={{ duration: DURATION, repeat: Infinity, ease: "linear" }}
+          />
+        </g>
+
+        {/* Falling sand stream */}
+        <motion.rect
+          x="99"
+          y="155"
+          width="2"
+          height="120"
+          fill="currentColor"
+          animate={{ opacity: [0.9, 0.5, 0.9] }}
+          transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
+        />
+
+        {/* Neck highlight */}
+        <path
+          d="M88 155 Q100 168 112 155"
+          stroke="currentColor"
+          strokeOpacity="0.6"
           strokeWidth="1"
-          animate={{ opacity: [0.3, 1, 0.3] }}
-          transition={{ duration: 1.6, repeat: Infinity }}
+          fill="none"
         />
       </svg>
-      <p className="mt-4 font-serif text-sm italic text-muted-foreground">Tempus fugit.</p>
+      <p className="mt-6 font-serif text-sm italic tracking-wide text-muted-foreground">
+        Tempus fugit.
+      </p>
     </section>
   );
 }
