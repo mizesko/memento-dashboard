@@ -100,6 +100,19 @@ function RootShell({ children }: { children: React.ReactNode }) {
     <html lang="en">
       <head>
         <HeadContent />
+        {/* Capture beforeinstallprompt immediately, before React hydrates */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.deferredPrompt = null;
+              window.addEventListener('beforeinstallprompt', function(e) {
+                e.preventDefault();
+                window.deferredPrompt = e;
+                window.dispatchEvent(new Event('pwa-prompt-available'));
+              });
+            `,
+          }}
+        />
       </head>
       <body>
         {children}

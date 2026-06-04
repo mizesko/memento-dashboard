@@ -38,12 +38,30 @@ function Index() {
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
 
   useEffect(() => {
+    // Check if the prompt was already captured by the global head script
+    if ((window as any).deferredPrompt) {
+      setDeferredPrompt((window as any).deferredPrompt);
+    }
+
+    // Listen for the custom event dispatched by the head script
+    const onPromptAvailable = () => {
+      if ((window as any).deferredPrompt) {
+        setDeferredPrompt((window as any).deferredPrompt);
+      }
+    };
+    window.addEventListener("pwa-prompt-available", onPromptAvailable);
+
+    // Also keep a direct listener as fallback
     const handler = (e: Event) => {
       e.preventDefault();
       setDeferredPrompt(e);
     };
     window.addEventListener("beforeinstallprompt", handler);
-    return () => window.removeEventListener("beforeinstallprompt", handler);
+
+    return () => {
+      window.removeEventListener("pwa-prompt-available", onPromptAvailable);
+      window.removeEventListener("beforeinstallprompt", handler);
+    };
   }, []);
 
   const handleInstallClick = async () => {
