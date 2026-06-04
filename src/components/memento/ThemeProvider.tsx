@@ -7,7 +7,10 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => setMounted(true), []);
   useEffect(() => {
     if (!mounted) return;
-    document.documentElement.classList.toggle("dark", theme === "dark");
+    const root = document.documentElement;
+    root.classList.remove("dark", "sepia");
+    if (theme === "dark") root.classList.add("dark");
+    else if (theme === "sepia") root.classList.add("sepia");
   }, [theme, mounted]);
   return <>{children}</>;
 }
