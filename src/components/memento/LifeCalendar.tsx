@@ -5,11 +5,12 @@ import { Label } from "@/components/ui/label";
 
 const YEARS = 80;
 const WEEKS_PER_YEAR = 52;
+const BLOCK_YEARS = 5;
 const TOTAL = YEARS * WEEKS_PER_YEAR;
+const BLOCKS = YEARS / BLOCK_YEARS;
 
 export function LifeCalendar() {
   const { birthDate, setBirthDate, paintedWeeks, togglePaintedWeek } = useStore();
-
 
   const weeksLived = useMemo(() => {
     if (!birthDate) return 0;
@@ -45,26 +46,42 @@ export function LifeCalendar() {
         </div>
       </div>
 
-      <div
-        className="grid gap-[2px] sm:gap-[3px]"
-        style={{ gridTemplateColumns: `repeat(${WEEKS_PER_YEAR}, minmax(0, 1fr))` }}
-        role="grid"
-        aria-label="Calendário Memento Mori"
-      >
-        {Array.from({ length: TOTAL }).map((_, i) => {
-          const lived = i < weeksLived || painted.has(i);
+      <div className="flex flex-col gap-3 sm:gap-4">
+        {Array.from({ length: BLOCKS }).map((_, blockIdx) => {
+          const startYear = blockIdx * BLOCK_YEARS;
+          const cellsInBlock = BLOCK_YEARS * WEEKS_PER_YEAR;
+          const startWeek = startYear * WEEKS_PER_YEAR;
+          const ageLabel = (blockIdx + 1) * BLOCK_YEARS;
           return (
-            <button
-              key={i}
-              type="button"
-              onClick={() => togglePaintedWeek(i)}
-              aria-label={`Semana ${i + 1}`}
-              className={`aspect-square rounded-[1px] border transition-colors ${
-                lived
-                  ? "border-cell-lived bg-cell-lived"
-                  : "border-cell-empty bg-transparent hover:bg-cell-empty/40"
-              }`}
-            />
+            <div key={blockIdx} className="flex items-end gap-2 sm:gap-3">
+              <div
+                className="grid flex-1 gap-[2px] sm:gap-[3px]"
+                style={{ gridTemplateColumns: `repeat(${WEEKS_PER_YEAR}, minmax(0, 1fr))` }}
+                role="grid"
+                aria-label={`Anos ${startYear + 1} a ${startYear + BLOCK_YEARS}`}
+              >
+                {Array.from({ length: cellsInBlock }).map((_, i) => {
+                  const globalIdx = startWeek + i;
+                  const lived = globalIdx < weeksLived || painted.has(globalIdx);
+                  return (
+                    <button
+                      key={globalIdx}
+                      type="button"
+                      onClick={() => togglePaintedWeek(globalIdx)}
+                      aria-label={`Semana ${globalIdx + 1}`}
+                      className={`aspect-square rounded-[1px] border transition-colors ${
+                        lived
+                          ? "border-cell-lived bg-cell-lived"
+                          : "border-cell-empty bg-transparent hover:bg-cell-empty/40"
+                      }`}
+                    />
+                  );
+                })}
+              </div>
+              <div className="w-6 shrink-0 text-right font-serif text-[10px] italic text-muted-foreground sm:w-8 sm:text-xs">
+                {ageLabel}
+              </div>
+            </div>
           );
         })}
       </div>
