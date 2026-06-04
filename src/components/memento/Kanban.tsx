@@ -29,11 +29,16 @@ function TaskCard({ task }: { task: Task }) {
       ref={setNodeRef}
       {...attributes}
       {...listeners}
-      className={`group flex items-start justify-between gap-2 rounded-md border border-border bg-card p-3 text-sm shadow-sm transition ${
+      className={`group flex w-full max-w-full items-start justify-between gap-2 overflow-hidden rounded-md border border-border bg-card p-3 text-sm shadow-sm transition ${
         isDragging ? "opacity-30" : "hover:border-foreground/40"
       }`}
     >
-      <span className="flex-1 cursor-grab break-words">{task.title}</span>
+      <span
+        className="min-w-0 flex-1 cursor-grab whitespace-normal break-words"
+        style={{ overflowWrap: "anywhere", wordBreak: "break-word" }}
+      >
+        {task.title}
+      </span>
       <button
         onClick={(e) => {
           e.stopPropagation();
