@@ -128,10 +128,8 @@
 }
 
 @keyframes wind-drift {
-  0% { transform: translateX(-20%); opacity: 0; }
-  10% { opacity: var(--wind-opacity, 0.25); }
-  90% { opacity: var(--wind-opacity, 0.25); }
-  100% { transform: translateX(120%); opacity: 0; }
+  0% { transform: translateX(-110%); }
+  100% { transform: translateX(110%); }
 }
 
 @keyframes leaf-sway {
