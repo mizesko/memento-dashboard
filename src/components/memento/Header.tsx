@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Moon, Sun } from "lucide-react";
+import { Moon, Sun, Coffee } from "lucide-react";
 import { motion } from "framer-motion";
 import { useStore } from "@/lib/store";
 import { getDailyQuote, QUOTES } from "@/lib/quotes";
@@ -21,7 +21,7 @@ export function Header() {
           <h1 className="font-serif text-2xl italic sm:text-3xl">Dashboard</h1>
         </div>
         <Button variant="ghost" size="icon" onClick={toggleTheme} aria-label="Alternar tema">
-          {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+          {theme === "dark" ? <Sun className="h-4 w-4" /> : theme === "light" ? <Coffee className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
         </Button>
       </div>
       <motion.div

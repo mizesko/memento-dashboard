@@ -5,8 +5,10 @@ export type ColumnId = "todo" | "doing" | "done";
 export interface Task { id: string; title: string; column: ColumnId }
 export interface Note { id: string; content: string; updatedAt: number }
 
+export type Theme = "dark" | "light" | "sepia";
+
 interface State {
-  theme: "dark" | "light";
+  theme: Theme;
   birthDate: string | null;
   paintedWeeks: number[]; // extra weeks user manually painted
   tasks: Task[];
@@ -32,7 +34,10 @@ export const useStore = create<State>()(
       paintedWeeks: [],
       tasks: [],
       notes: [],
-      toggleTheme: () => set((s) => ({ theme: s.theme === "dark" ? "light" : "dark" })),
+      toggleTheme: () =>
+        set((s) => ({
+          theme: s.theme === "dark" ? "light" : s.theme === "light" ? "sepia" : "dark",
+        })),
       setBirthDate: (d) => set({ birthDate: d }),
       togglePaintedWeek: (idx) =>
         set((s) => ({
