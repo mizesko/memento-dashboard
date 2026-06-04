@@ -21,7 +21,18 @@ export function Header() {
           <h1 className="font-serif text-2xl italic sm:text-3xl">Dashboard</h1>
         </div>
         <Button variant="ghost" size="icon" onClick={toggleTheme} aria-label="Alternar tema">
-          {theme === "dark" ? <Sun className="h-4 w-4" /> : theme === "light" ? <Coffee className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+          <motion.div
+            animate={{ scale: [1, 1.1, 1], rotate: [0, 5, -5, 0] }}
+            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+          >
+            {theme === "dark" ? (
+              <Sun className="h-4 w-4" />
+            ) : theme === "light" ? (
+              <Coffee className="h-4 w-4" />
+            ) : (
+              <Moon className="h-4 w-4" />
+            )}
+          </motion.div>
         </Button>
       </div>
       <motion.div
@@ -31,9 +42,7 @@ export function Header() {
         transition={{ duration: 0.8 }}
         className="mx-auto max-w-3xl px-4 pb-8 text-center"
       >
-        <p className="font-serif text-lg italic leading-relaxed sm:text-2xl">
-          "{quote.text}"
-        </p>
+        <p className="font-serif text-lg italic leading-relaxed sm:text-2xl">"{quote.text}"</p>
         <p className="mt-2 text-xs uppercase tracking-[0.25em] text-muted-foreground">
           — {quote.author}
         </p>

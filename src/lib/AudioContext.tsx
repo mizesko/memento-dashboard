@@ -11,9 +11,14 @@ import {
 type AudioContextType = {
   playing: boolean;
   toggle: () => void;
+  startAudio: () => void;
 };
 
-const AudioCtx = createContext<AudioContextType>({ playing: false, toggle: () => {} });
+const AudioCtx = createContext<AudioContextType>({
+  playing: false,
+  toggle: () => {},
+  startAudio: () => {},
+});
 
 export function AudioProvider({ children }: { children: ReactNode }) {
   const [playing, setPlaying] = useState(false);
@@ -47,6 +52,14 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
+  const startAudio = useCallback(() => {
+    const audio = audioRef.current;
+    if (!audio || playing) return;
+    audio.play().catch(() => {});
+    setPlaying(true);
+    startedRef.current = true;
+  }, [playing]);
+
   const toggle = useCallback(() => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -60,7 +73,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     }
   }, [playing]);
 
-  return <AudioCtx.Provider value={{ playing, toggle }}>{children}</AudioCtx.Provider>;
+  return <AudioCtx.Provider value={{ playing, toggle, startAudio }}>{children}</AudioCtx.Provider>;
 }
 
 export function useAudio() {

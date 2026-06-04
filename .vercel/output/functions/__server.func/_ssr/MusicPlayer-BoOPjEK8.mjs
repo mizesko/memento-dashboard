@@ -1,8 +1,13 @@
 import { r as reactExports, j as jsxRuntimeExports } from "../_libs/react.mjs";
 import { c as create, p as persist, a as createJSONStorage } from "../_libs/zustand.mjs";
 import { d as Pause, e as Play } from "../_libs/lucide-react.mjs";
-const AudioCtx = reactExports.createContext({ playing: false, toggle: () => {
-} });
+const AudioCtx = reactExports.createContext({
+  playing: false,
+  toggle: () => {
+  },
+  startAudio: () => {
+  }
+});
 function AudioProvider({ children }) {
   const [playing, setPlaying] = reactExports.useState(false);
   const audioRef = reactExports.useRef(null);
@@ -26,6 +31,14 @@ function AudioProvider({ children }) {
       audio.src = "";
     };
   }, []);
+  const startAudio = reactExports.useCallback(() => {
+    const audio = audioRef.current;
+    if (!audio || playing) return;
+    audio.play().catch(() => {
+    });
+    setPlaying(true);
+    startedRef.current = true;
+  }, [playing]);
   const toggle = reactExports.useCallback(() => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -38,7 +51,7 @@ function AudioProvider({ children }) {
       setPlaying(true);
     }
   }, [playing]);
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(AudioCtx.Provider, { value: { playing, toggle }, children });
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(AudioCtx.Provider, { value: { playing, toggle, startAudio }, children });
 }
 function useAudio() {
   return reactExports.useContext(AudioCtx);
@@ -95,7 +108,7 @@ function ThemeProvider({ children }) {
 }
 function MusicPlayer() {
   const { playing, toggle } = useAudio();
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed top-4 right-4 sm:right-6 z-50", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed bottom-4 left-4 sm:left-6 z-50", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
     "button",
     {
       onClick: toggle,
@@ -112,5 +125,6 @@ export {
   AudioProvider as A,
   MusicPlayer as M,
   ThemeProvider as T,
-  useStore as u
+  useStore as a,
+  useAudio as u
 };

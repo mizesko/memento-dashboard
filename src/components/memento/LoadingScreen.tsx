@@ -5,21 +5,24 @@ const SAND_DURATION = 7; // segundos para a areia descer
 
 type LoadingScreenProps = {
   onComplete: () => void;
+  onStart?: () => void;
 };
 
-export function LoadingScreen({ onComplete }: LoadingScreenProps) {
+export function LoadingScreen({ onComplete, onStart }: LoadingScreenProps) {
   const [started, setStarted] = useState(false);
   const [finished, setFinished] = useState(false);
 
   const handleClick = useCallback(() => {
     if (started) return;
     setStarted(true);
+    // Inicia a música quando o usuário clica na ampulheta
+    onStart?.();
     // Aguarda a animação da areia terminar + um pequeno delay
     setTimeout(() => {
       setFinished(true);
       setTimeout(() => onComplete(), 600);
     }, SAND_DURATION * 1000);
-  }, [started, onComplete]);
+  }, [started, onComplete, onStart]);
 
   return (
     <AnimatePresence>

@@ -1,6 +1,6 @@
 import { j as jsxRuntimeExports, r as reactExports } from "../_libs/react.mjs";
 import { L as Link } from "../_libs/tanstack__react-router.mjs";
-import { A as AudioProvider, T as ThemeProvider, M as MusicPlayer } from "./MusicPlayer-w_bD5b3N.mjs";
+import { A as AudioProvider, T as ThemeProvider, M as MusicPlayer } from "./MusicPlayer-BoOPjEK8.mjs";
 import { A as ArrowLeft, R as RotateCcw, M as Mail, P as Phone, G as Github, a as Globe } from "../_libs/lucide-react.mjs";
 import "../_libs/tanstack__router-core.mjs";
 import "../_libs/tanstack__history.mjs";

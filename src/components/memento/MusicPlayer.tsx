@@ -5,7 +5,7 @@ export function MusicPlayer() {
   const { playing, toggle } = useAudio();
 
   return (
-    <div className="fixed top-4 right-4 sm:right-6 z-50">
+    <div className="fixed bottom-4 left-4 sm:left-6 z-50">
       <button
         onClick={toggle}
         className="flex items-center gap-2 rounded-full border border-foreground/20 bg-background/60 backdrop-blur-md px-3 py-2 sm:px-4 sm:py-2.5 text-foreground/70 hover:text-foreground hover:border-foreground/40 transition-all duration-300 text-xs uppercase tracking-widest"

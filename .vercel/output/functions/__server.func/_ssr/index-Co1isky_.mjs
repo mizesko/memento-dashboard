@@ -1,6 +1,6 @@
 import { r as reactExports, j as jsxRuntimeExports } from "../_libs/react.mjs";
 import { L as Link } from "../_libs/tanstack__react-router.mjs";
-import { A as AudioProvider, T as ThemeProvider, M as MusicPlayer, u as useStore } from "./MusicPlayer-w_bD5b3N.mjs";
+import { u as useAudio, A as AudioProvider, T as ThemeProvider, M as MusicPlayer, a as useStore } from "./MusicPlayer-BoOPjEK8.mjs";
 import { S as Slot } from "../_libs/radix-ui__react-slot.mjs";
 import { c as cva } from "../_libs/class-variance-authority.mjs";
 import { c as clsx } from "../_libs/clsx.mjs";
@@ -95,7 +95,14 @@ function Header() {
         /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] uppercase tracking-[0.3em] text-muted-foreground", children: "Memento Mori" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "font-serif text-2xl italic sm:text-3xl", children: "Dashboard" })
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { variant: "ghost", size: "icon", onClick: toggleTheme, "aria-label": "Alternar tema", children: theme === "dark" ? /* @__PURE__ */ jsxRuntimeExports.jsx(Sun, { className: "h-4 w-4" }) : theme === "light" ? /* @__PURE__ */ jsxRuntimeExports.jsx(Coffee, { className: "h-4 w-4" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Moon, { className: "h-4 w-4" }) })
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { variant: "ghost", size: "icon", onClick: toggleTheme, "aria-label": "Alternar tema", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+        motion.div,
+        {
+          animate: { scale: [1, 1.1, 1], rotate: [0, 5, -5, 0] },
+          transition: { duration: 3, repeat: Infinity, ease: "easeInOut" },
+          children: theme === "dark" ? /* @__PURE__ */ jsxRuntimeExports.jsx(Sun, { className: "h-4 w-4" }) : theme === "light" ? /* @__PURE__ */ jsxRuntimeExports.jsx(Coffee, { className: "h-4 w-4" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Moon, { className: "h-4 w-4" })
+        }
+      ) })
     ] }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs(
       motion.div,
@@ -874,17 +881,18 @@ function PosterFrame() {
   ] });
 }
 const SAND_DURATION = 7;
-function LoadingScreen({ onComplete }) {
+function LoadingScreen({ onComplete, onStart }) {
   const [started, setStarted] = reactExports.useState(false);
   const [finished, setFinished] = reactExports.useState(false);
   const handleClick = reactExports.useCallback(() => {
     if (started) return;
     setStarted(true);
+    onStart?.();
     setTimeout(() => {
       setFinished(true);
       setTimeout(() => onComplete(), 600);
     }, SAND_DURATION * 1e3);
-  }, [started, onComplete]);
+  }, [started, onComplete, onStart]);
   return /* @__PURE__ */ jsxRuntimeExports.jsx(AnimatePresence, { children: !finished && /* @__PURE__ */ jsxRuntimeExports.jsxs(
     motion.div,
     {
@@ -1186,6 +1194,9 @@ function CursorTrail() {
 function Index() {
   const [loaded, setLoaded] = reactExports.useState(false);
   const [deferredPrompt, setDeferredPrompt] = reactExports.useState(null);
+  const {
+    startAudio
+  } = useAudio();
   const handleLoadComplete = reactExports.useCallback(() => {
     setLoaded(true);
   }, []);
@@ -1219,7 +1230,7 @@ function Index() {
     setDeferredPrompt(null);
   };
   return /* @__PURE__ */ jsxRuntimeExports.jsx(AudioProvider, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs(ThemeProvider, { children: [
-    !loaded && /* @__PURE__ */ jsxRuntimeExports.jsx(LoadingScreen, { onComplete: handleLoadComplete }),
+    !loaded && /* @__PURE__ */ jsxRuntimeExports.jsx(LoadingScreen, { onComplete: handleLoadComplete, onStart: startAudio }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative min-h-screen bg-background text-foreground", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(CursorTrail, {}),
       /* @__PURE__ */ jsxRuntimeExports.jsx(WindLines, {}),

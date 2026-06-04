@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { AudioProvider } from "@/lib/AudioContext";
+import { AudioProvider, useAudio } from "@/lib/AudioContext";
 import { ThemeProvider } from "@/components/memento/ThemeProvider";
 import { Header } from "@/components/memento/Header";
 import { LifeCalendar } from "@/components/memento/LifeCalendar";
@@ -39,6 +39,7 @@ export const Route = createFileRoute("/")({
 function Index() {
   const [loaded, setLoaded] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const { startAudio } = useAudio();
   const handleLoadComplete = useCallback(() => {
     setLoaded(true);
   }, []);
@@ -82,7 +83,7 @@ function Index() {
     <AudioProvider>
       <ThemeProvider>
         {/* Loading screen - fica por cima até o usuário clicar e a areia terminar */}
-        {!loaded && <LoadingScreen onComplete={handleLoadComplete} />}
+        {!loaded && <LoadingScreen onComplete={handleLoadComplete} onStart={startAudio} />}
 
         <div className="relative min-h-screen bg-background text-foreground">
           <CursorTrail />
