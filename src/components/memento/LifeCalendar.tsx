@@ -55,8 +55,10 @@ export function LifeCalendar() {
           return (
             <div key={blockIdx} className="flex items-end gap-2 sm:gap-3">
               <div
-                className="grid flex-1 gap-[2px] sm:gap-[3px]"
-                style={{ gridTemplateColumns: `repeat(${WEEKS_PER_YEAR}, minmax(0, 1fr))` }}
+                className="grid flex-1 gap-[3px] sm:gap-[3px]"
+                style={{
+                  gridTemplateColumns: `repeat(${WEEKS_PER_YEAR}, minmax(4px, 1fr))`,
+                }}
                 role="grid"
                 aria-label={`Anos ${startYear + 1} a ${startYear + BLOCK_YEARS}`}
               >
@@ -74,6 +76,7 @@ export function LifeCalendar() {
                           ? "border-cell-lived bg-cell-lived"
                           : "border-cell-empty bg-transparent hover:bg-cell-empty/40"
                       }`}
+                      style={{ minWidth: "4px", minHeight: "4px" }}
                     />
                   );
                 })}

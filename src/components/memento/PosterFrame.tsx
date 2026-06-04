@@ -1,9 +1,12 @@
-function OliveBranch({ position }: { position: "tl" | "br" }) {
-  // Designed for top-left; rotate 180 for bottom-right.
-  const rotation = position === "br" ? "rotate(180 200 300)" : "";
+function OliveBranch({ position }: { position: "tl" | "br" | "extra" }) {
+  // tl = top-left (normal), br = bottom-right (rotated 180), extra = bottom-right-lower
+  const isBr = position === "br";
+  const isExtra = position === "extra";
+  const rotation = isBr ? "rotate(180 100 150)" : isExtra ? "rotate(160 100 150)" : "";
+  const viewBox = isExtra ? "200 300" : "200 300";
   return (
     <svg
-      viewBox="0 0 200 300"
+      viewBox={`0 0 ${viewBox}`}
       className="h-full w-auto text-foreground/80"
       fill="none"
       stroke="currentColor"
@@ -26,7 +29,6 @@ function OliveBranch({ position }: { position: "tl" | "br" }) {
         {/* Leaves along main stem — alternating sides */}
         {Array.from({ length: 22 }).map((_, i) => {
           const t = i / 21;
-          // approximate point on main stem
           const x = 20 + 8 * Math.sin(t * Math.PI) + t * 42;
           const y = t * 295;
           const side = i % 2 === 0 ? -1 : 1;
@@ -36,7 +38,15 @@ function OliveBranch({ position }: { position: "tl" | "br" }) {
           return (
             <g key={`m-${i}`} transform={`translate(${x} ${y}) rotate(${angle})`}>
               <ellipse cx={side * 6} cy="0" rx={rx} ry={ry} fill="currentColor" opacity="0.75" />
-              <line x1="0" y1="0" x2={side * 6} y2="0" stroke="currentColor" strokeWidth="0.6" opacity="0.6" />
+              <line
+                x1="0"
+                y1="0"
+                x2={side * 6}
+                y2="0"
+                stroke="currentColor"
+                strokeWidth="0.6"
+                opacity="0.6"
+              />
             </g>
           );
         })}
@@ -101,14 +111,19 @@ export function PosterFrame() {
       <div className="absolute inset-x-6 top-3 border-t border-dashed border-foreground/15 sm:top-6" />
       <div className="absolute inset-x-6 bottom-3 border-b border-dashed border-foreground/15 sm:bottom-6" />
 
-      {/* Top-left olive branch — large, vertical, hugging the side */}
-      <div className="absolute left-3 top-6 h-[42vh] max-h-[520px] min-h-[260px] sm:left-6 sm:top-8">
+      {/* Top-left olive branch — hidden on mobile */}
+      <div className="absolute left-3 top-6 h-[42vh] max-h-[520px] min-h-[260px] sm:left-6 sm:top-8 hidden md:block">
         <OliveBranch position="tl" />
       </div>
 
-      {/* Bottom-right olive branch — mirrored */}
-      <div className="absolute bottom-6 right-3 h-[42vh] max-h-[520px] min-h-[260px] sm:bottom-8 sm:right-6">
+      {/* Bottom-right olive branch — hidden on mobile */}
+      <div className="absolute bottom-6 right-3 h-[42vh] max-h-[520px] min-h-[260px] sm:bottom-8 sm:right-6 hidden md:block">
         <OliveBranch position="br" />
+      </div>
+
+      {/* Extra lower-right olive branch — only on desktop, fills the empty space */}
+      <div className="absolute bottom-6 right-3 h-[28vh] max-h-[360px] min-h-[200px] sm:bottom-8 sm:right-6 hidden md:block translate-x-[55%] translate-y-[30%] opacity-70">
+        <OliveBranch position="extra" />
       </div>
     </div>
   );

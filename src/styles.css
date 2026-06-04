@@ -88,7 +88,8 @@
   * {
     border-color: var(--color-border);
   }
-  html, body {
+  html,
+  body {
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
@@ -97,10 +98,20 @@
 }
 
 @keyframes sand-fall {
-  0% { transform: translateY(-8px); opacity: 0; }
-  20% { opacity: 1; }
-  80% { opacity: 1; }
-  100% { transform: translateY(40px); opacity: 0; }
+  0% {
+    transform: translateY(-8px);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(40px);
+    opacity: 0;
+  }
 }
 
 .sepia {
@@ -128,11 +139,70 @@
 }
 
 @keyframes wind-drift {
-  0% { transform: translateX(-110%); }
-  100% { transform: translateX(110%); }
+  0% {
+    transform: translateX(-110%);
+  }
+  100% {
+    transform: translateX(110%);
+  }
 }
 
-@keyframes leaf-sway {
-  0%, 100% { transform: rotate(-2deg); }
-  50% { transform: rotate(2deg); }
+@keyframes leaf-float {
+  0% {
+    transform: translateX(-10vw) translateY(0px) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  50% {
+    transform: translateX(50vw) translateY(-15px) rotate(180deg);
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(110vw) translateY(10px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes dot-drift {
+  0% {
+    transform: translateX(-5vw) translateY(0px);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  50% {
+    transform: translateX(50vw) translateY(-10px);
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(105vw) translateY(8px);
+    opacity: 0;
+  }
+}
+
+@keyframes leaf-fall {
+  0% {
+    transform: translateY(0) translateX(0px) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(50vh) translateX(15px) rotate(180deg);
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(105vh) translateX(-10px) rotate(360deg);
+    opacity: 0;
+  }
 }
