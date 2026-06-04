@@ -36,7 +36,7 @@ function Index() {
     <ThemeProvider>
       <div className="relative min-h-screen bg-background text-foreground">
         <WindLines />
-        <OliveBranches />
+        <PosterFrame />
         <div className="relative z-20">
           <Header />
           <main>
