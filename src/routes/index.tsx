@@ -6,7 +6,7 @@ import { Hourglass } from "@/components/memento/Hourglass";
 import { Kanban } from "@/components/memento/Kanban";
 import { Notes } from "@/components/memento/Notes";
 import { WindLines } from "@/components/memento/WindLines";
-import { OliveBranches } from "@/components/memento/OliveBranches";
+import { PosterFrame } from "@/components/memento/PosterFrame";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -36,7 +36,7 @@ function Index() {
     <ThemeProvider>
       <div className="relative min-h-screen bg-background text-foreground">
         <WindLines />
-        <OliveBranches />
+        <PosterFrame />
         <div className="relative z-20">
           <Header />
           <main>

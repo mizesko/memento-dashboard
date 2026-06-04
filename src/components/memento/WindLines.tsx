@@ -1,40 +1,50 @@
 import { useStore } from "@/lib/store";
 
-const LINES = [
-  { top: "12%", duration: 55, delay: 0, width: 220, opacity: 0.18 },
-  { top: "28%", duration: 75, delay: 8, width: 320, opacity: 0.14 },
-  { top: "44%", duration: 90, delay: 20, width: 180, opacity: 0.2 },
-  { top: "62%", duration: 65, delay: 4, width: 260, opacity: 0.16 },
-  { top: "80%", duration: 100, delay: 14, width: 300, opacity: 0.12 },
+const WAVES = [
+  { top: "10%", duration: 90, delay: 0, opacity: 0.35, amp: 6 },
+  { top: "26%", duration: 130, delay: 12, opacity: 0.25, amp: 10 },
+  { top: "42%", duration: 110, delay: 5, opacity: 0.3, amp: 4 },
+  { top: "58%", duration: 150, delay: 20, opacity: 0.22, amp: 12 },
+  { top: "74%", duration: 100, delay: 8, opacity: 0.28, amp: 7 },
+  { top: "88%", duration: 140, delay: 2, opacity: 0.2, amp: 5 },
 ];
 
 export function WindLines() {
   const theme = useStore((s) => s.theme);
   const color =
     theme === "dark"
-      ? "rgba(255,255,255,0.6)"
+      ? "rgba(255,255,255,0.7)"
       : theme === "sepia"
-        ? "rgba(90,60,30,0.5)"
-        : "rgba(40,40,40,0.4)";
+        ? "rgba(40,22,10,0.55)"
+        : "rgba(50,50,50,0.5)";
 
   return (
     <div
       aria-hidden
       className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
     >
-      {LINES.map((l, i) => (
-        <div
+      {WAVES.map((w, i) => (
+        <svg
           key={i}
+          viewBox="0 0 1200 40"
+          preserveAspectRatio="none"
           className="absolute left-0"
           style={{
-            top: l.top,
-            width: `${l.width}px`,
-            height: "1px",
-            background: `linear-gradient(90deg, transparent, ${color}, transparent)`,
-            animation: `wind-drift ${l.duration}s linear ${l.delay}s infinite`,
-            ["--wind-opacity" as string]: l.opacity,
+            top: w.top,
+            width: "200%",
+            height: "40px",
+            opacity: w.opacity,
+            animation: `wind-drift ${w.duration}s linear ${w.delay}s infinite`,
           }}
-        />
+        >
+          <path
+            d={`M0 20 Q 150 ${20 - w.amp} 300 20 T 600 20 T 900 20 T 1200 20`}
+            fill="none"
+            stroke={color}
+            strokeWidth="1"
+            strokeLinecap="round"
+          />
+        </svg>
       ))}
     </div>
   );
