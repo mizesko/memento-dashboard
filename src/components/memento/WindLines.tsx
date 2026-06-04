@@ -10,26 +10,24 @@ type WindLine = {
   strokeWidth: number;
 };
 
-type Leaf = {
+type Snowflake = {
   top: string;
   duration: number;
   delay: number;
   opacity: number;
-  xStart: number;
-  xEnd: number;
-  yOscillation: number;
   rotation: number;
   scale: number;
+  variant: number;
 };
 
-type FallingLeaf = {
+type FallingSnowflake = {
   left: string;
   duration: number;
   delay: number;
   opacity: number;
   rotation: number;
   scale: number;
-  drift: number;
+  variant: number;
 };
 
 type Dot = {
@@ -37,8 +35,6 @@ type Dot = {
   duration: number;
   delay: number;
   opacity: number;
-  xStart: number;
-  xEnd: number;
   size: number;
 };
 
@@ -71,17 +67,91 @@ function makeWindPath(seed: number): string {
   return points.join(" ");
 }
 
-function makeLeafPath(): string {
-  return "M 0 0 C 4 -6, 8 -4, 10 0 C 8 4, 4 6, 0 0";
+function makeSnowflakePath(variant: number): string {
+  switch (variant % 3) {
+    case 0:
+      return (
+        "M 0 -20 L 0 20 " +
+        "M -17.3 -10 L 17.3 10 " +
+        "M -17.3 10 L 17.3 -10 " +
+        "M 0 -14 L 3 -17 M 0 -14 L -3 -17 " +
+        "M 0 -8 L 3 -11 M 0 -8 L -3 -11 " +
+        "M 0 14 L 3 17 M 0 14 L -3 17 " +
+        "M 0 8 L 3 11 M 0 8 L -3 11 " +
+        "M 14 7 L 17 4 M 14 7 L 17 10 " +
+        "M 8 4 L 11 1 M 8 4 L 11 7 " +
+        "M 14 -7 L 17 -4 M 14 -7 L 11 -10 " +
+        "M 8 -4 L 11 -1 M 8 -4 L 5 -7 " +
+        "M -14 7 L -17 4 M -14 7 L -17 10 " +
+        "M -8 4 L -11 1 M -8 4 L -11 7 " +
+        "M -14 -7 L -17 -4 M -14 -7 L -11 -10 " +
+        "M -8 -4 L -11 -1 M -8 -4 L -5 -7"
+      );
+    case 1:
+      return (
+        "M 0 -18 L 0 18 " +
+        "M -15.6 -9 L 15.6 9 " +
+        "M -15.6 9 L 15.6 -9 " +
+        "M 0 -12 L 4 -14 M 0 -12 L -4 -14 " +
+        "M 0 -6 L 3 -8 M 0 -6 L -3 -8 " +
+        "M 0 12 L 4 14 M 0 12 L -4 14 " +
+        "M 0 6 L 3 8 M 0 6 L -3 8 " +
+        "M 12 6 L 14 4 M 12 6 L 14 8 " +
+        "M 6 3 L 8 1 M 6 3 L 8 5 " +
+        "M 12 -6 L 14 -4 M 12 -6 L 10 -8 " +
+        "M 6 -3 L 8 -1 M 6 -3 L 4 -5 " +
+        "M -12 6 L -14 4 M -12 6 L -14 8 " +
+        "M -6 3 L -8 1 M -6 3 L -8 5 " +
+        "M -12 -6 L -14 -4 M -12 -6 L -10 -8 " +
+        "M -6 -3 L -8 -1 M -6 -3 L -4 -5"
+      );
+    case 2:
+    default:
+      return (
+        "M 0 -20 L 0 20 " +
+        "M -17.3 -10 L 17.3 10 " +
+        "M -17.3 10 L 17.3 -10 " +
+        "M 0 -15 L 3 -16 M 0 -15 L -3 -16 " +
+        "M 0 -10 L 4 -11 M 0 -10 L -4 -11 " +
+        "M 0 -5 L 3 -6 M 0 -5 L -3 -6 " +
+        "M 0 15 L 3 16 M 0 15 L -3 16 " +
+        "M 0 10 L 4 11 M 0 10 L -4 11 " +
+        "M 0 5 L 3 6 M 0 5 L -3 6 " +
+        "M 13 7 L 15 5 M 13 7 L 15 9 " +
+        "M 8 4 L 10 2 M 8 4 L 10 6 " +
+        "M 13 -7 L 15 -5 M 13 -7 L 11 -9 " +
+        "M 8 -4 L 10 -2 M 8 -4 L 6 -6 " +
+        "M -13 7 L -15 5 M -13 7 L -15 9 " +
+        "M -8 4 L -10 2 M -8 4 L -10 6 " +
+        "M -13 -7 L -15 -5 M -13 -7 L -11 -9 " +
+        "M -8 -4 L -10 -2 M -8 -4 L -6 -6"
+      );
+  }
 }
 
-function makeSmallLeafPath(): string {
-  return "M 0 0 C 3 -4, 6 -3, 7 0 C 6 3, 3 4, 0 0";
+function makeSmallSnowflakePath(): string {
+  return (
+    "M 0 -12 L 0 12 " +
+    "M -10.4 -6 L 10.4 6 " +
+    "M -10.4 6 L 10.4 -6 " +
+    "M 0 -8 L 3 -9 M 0 -8 L -3 -9 " +
+    "M 0 -4 L 2 -5 M 0 -4 L -2 -5 " +
+    "M 0 8 L 3 9 M 0 8 L -3 9 " +
+    "M 0 4 L 2 5 M 0 4 L -2 5 " +
+    "M 8 4 L 9 2 M 8 4 L 9 6 " +
+    "M 4 2 L 5 1 M 4 2 L 5 3 " +
+    "M 8 -4 L 9 -2 M 8 -4 L 7 -6 " +
+    "M 4 -2 L 5 -1 M 4 -2 L 3 -3 " +
+    "M -8 4 L -9 2 M -8 4 L -9 6 " +
+    "M -4 2 L -5 1 M -4 2 L -5 3 " +
+    "M -8 -4 L -9 -2 M -8 -4 L -7 -6 " +
+    "M -4 -2 L -5 -1 M -4 -2 L -3 -3"
+  );
 }
 
-const LEAF_COUNT = 14;
+const SNOWFLAKE_COUNT = 14;
 const DOT_COUNT = 30;
-const FALLING_LEAF_COUNT = 10;
+const FALLING_SNOWFLAKE_COUNT = 10;
 
 export function WindLines() {
   const lines = useMemo<WindLine[]>(
@@ -144,37 +214,35 @@ export function WindLines() {
     [],
   );
 
-  const leaves = useMemo<Leaf[]>(() => {
-    const result: Leaf[] = [];
-    for (let i = 0; i < LEAF_COUNT; i++) {
+  const snowflakes = useMemo<Snowflake[]>(() => {
+    const result: Snowflake[] = [];
+    for (let i = 0; i < SNOWFLAKE_COUNT; i++) {
       const seed = i * 1.3;
       result.push({
         top: `${8 + ((seed * 7) % 84)}%`,
         duration: 15 + ((seed * 3) % 8),
         delay: (seed * 2.5) % 10,
-        opacity: 0.18 + (seed % 5) * 0.04,
-        xStart: -10,
-        xEnd: 110,
-        yOscillation: 20 + ((seed * 5) % 30),
+        opacity: 0.28 + (seed % 5) * 0.05,
         rotation: 30 + ((seed * 40) % 300),
-        scale: 0.6 + (seed % 4) * 0.15,
+        scale: 0.5 + (seed % 4) * 0.2,
+        variant: i % 3,
       });
     }
     return result;
   }, []);
 
-  const fallingLeaves = useMemo<FallingLeaf[]>(() => {
-    const result: FallingLeaf[] = [];
-    for (let i = 0; i < FALLING_LEAF_COUNT; i++) {
+  const fallingSnowflakes = useMemo<FallingSnowflake[]>(() => {
+    const result: FallingSnowflake[] = [];
+    for (let i = 0; i < FALLING_SNOWFLAKE_COUNT; i++) {
       const seed = i * 2.1 + 7;
       result.push({
         left: `${5 + ((seed * 13) % 90)}%`,
         duration: 10 + ((seed * 2) % 10),
         delay: (seed * 1.4) % 12,
-        opacity: 0.15 + (seed % 4) * 0.04,
+        opacity: 0.25 + (seed % 4) * 0.05,
         rotation: 20 + ((seed * 35) % 340),
-        scale: 0.5 + (seed % 3) * 0.2,
-        drift: -30 + ((seed * 7) % 60),
+        scale: 0.4 + (seed % 3) * 0.25,
+        variant: (i + 1) % 3,
       });
     }
     return result;
@@ -188,10 +256,8 @@ export function WindLines() {
         top: `${5 + ((seed * 11) % 90)}%`,
         duration: 12 + ((seed * 2) % 10),
         delay: (seed * 1.8) % 12,
-        opacity: 0.12 + (seed % 6) * 0.025,
-        xStart: -5,
-        xEnd: 105,
-        size: 1 + (seed % 3) * 0.5,
+        opacity: 0.18 + (seed % 6) * 0.03,
+        size: 1.2 + (seed % 3) * 0.6,
       });
     }
     return result;
@@ -199,7 +265,6 @@ export function WindLines() {
 
   return (
     <div aria-hidden className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
-      {/* Wind lines */}
       {lines.map((w, i) => (
         <svg
           key={`line-${i}`}
@@ -226,25 +291,51 @@ export function WindLines() {
         </svg>
       ))}
 
-      {/* Floating leaves (horizontal wind) */}
-      {leaves.map((leaf, i) => (
+      {snowflakes.map((sf, i) => (
         <svg
-          key={`leaf-${i}`}
-          viewBox="0 0 10 6"
+          key={`sf-${i}`}
+          viewBox="-24 -24 48 48"
           className="absolute text-foreground"
           style={{
-            top: leaf.top,
+            top: sf.top,
             left: 0,
-            width: `${leaf.scale * 1.2}%`,
-            height: `${leaf.scale * 1.8}vh`,
-            opacity: leaf.opacity,
-            animation: `leaf-float ${leaf.duration}s ease-in-out ${leaf.delay}s infinite`,
+            width: `${sf.scale * 1.8}%`,
+            height: `${sf.scale * 2.5}vh`,
+            opacity: sf.opacity,
+            animation: `leaf-float ${sf.duration}s ease-in-out ${sf.delay}s infinite`,
             willChange: "transform",
-            rotate: `${leaf.rotation}deg`,
+            rotate: `${sf.rotation}deg`,
           }}
         >
           <path
-            d={makeLeafPath()}
+            d={makeSnowflakePath(sf.variant)}
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      ))}
+
+      {snowflakes.slice(0, 8).map((sf, i) => (
+        <svg
+          key={`ssf-${i}`}
+          viewBox="-16 -16 32 32"
+          className="absolute text-foreground"
+          style={{
+            top: `${parseFloat(sf.top) + 5 + i * 3}%`,
+            left: 0,
+            width: `${sf.scale * 1.2}%`,
+            height: `${sf.scale * 1.7}vh`,
+            opacity: sf.opacity * 0.9,
+            animation: `leaf-float ${sf.duration + 3}s ease-in-out ${sf.delay + 2}s infinite`,
+            willChange: "transform",
+            rotate: `${sf.rotation + 90}deg`,
+          }}
+        >
+          <path
+            d={makeSmallSnowflakePath()}
             fill="none"
             stroke="currentColor"
             strokeWidth="0.8"
@@ -254,53 +345,51 @@ export function WindLines() {
         </svg>
       ))}
 
-      {/* Small decorative leaves */}
-      {leaves.slice(0, 8).map((leaf, i) => (
+      {fallingSnowflakes.map((fs, i) => (
         <svg
-          key={`sleaf-${i}`}
-          viewBox="0 0 7 4"
+          key={`fs-${i}`}
+          viewBox="-24 -24 48 48"
           className="absolute text-foreground"
           style={{
-            top: `${parseFloat(leaf.top) + 5 + i * 3}%`,
-            left: 0,
-            width: `${leaf.scale * 0.8}%`,
-            height: `${leaf.scale * 1.2}vh`,
-            opacity: leaf.opacity * 0.9,
-            animation: `leaf-float ${leaf.duration + 3}s ease-in-out ${leaf.delay + 2}s infinite`,
+            left: fs.left,
+            top: "-5%",
+            width: `${fs.scale * 1.8}%`,
+            height: `${fs.scale * 2.5}vh`,
+            opacity: fs.opacity,
+            animation: `leaf-fall ${fs.duration}s ease-in-out ${fs.delay}s infinite`,
             willChange: "transform",
-            rotate: `${leaf.rotation + 90}deg`,
+            rotate: `${fs.rotation}deg`,
           }}
         >
           <path
-            d={makeSmallLeafPath()}
+            d={makeSnowflakePath(fs.variant)}
             fill="none"
             stroke="currentColor"
-            strokeWidth="0.7"
+            strokeWidth="1"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
         </svg>
       ))}
 
-      {/* Falling leaves (vertical/diagonal, from top to bottom) */}
-      {fallingLeaves.map((fl, i) => (
+      {fallingSnowflakes.slice(0, 6).map((fs, i) => (
         <svg
-          key={`fleaf-${i}`}
-          viewBox="0 0 10 6"
+          key={`sfs-${i}`}
+          viewBox="-16 -16 32 32"
           className="absolute text-foreground"
           style={{
-            left: fl.left,
+            left: `${parseFloat(fs.left) + 12 + i * 5}%`,
             top: "-5%",
-            width: `${fl.scale * 1.2}%`,
-            height: `${fl.scale * 1.8}vh`,
-            opacity: fl.opacity,
-            animation: `leaf-fall ${fl.duration}s ease-in-out ${fl.delay}s infinite`,
+            width: `${fs.scale * 1.2}%`,
+            height: `${fs.scale * 1.7}vh`,
+            opacity: fs.opacity * 0.85,
+            animation: `leaf-fall ${fs.duration + 3}s ease-in-out ${fs.delay + 1.5}s infinite`,
             willChange: "transform",
-            rotate: `${fl.rotation}deg`,
+            rotate: `${fs.rotation + 120}deg`,
           }}
         >
           <path
-            d={makeLeafPath()}
+            d={makeSmallSnowflakePath()}
             fill="none"
             stroke="currentColor"
             strokeWidth="0.8"
@@ -310,35 +399,6 @@ export function WindLines() {
         </svg>
       ))}
 
-      {/* Small falling leaves */}
-      {fallingLeaves.slice(0, 6).map((fl, i) => (
-        <svg
-          key={`sfleaf-${i}`}
-          viewBox="0 0 7 4"
-          className="absolute text-foreground"
-          style={{
-            left: `${parseFloat(fl.left) + 12 + i * 5}%`,
-            top: "-5%",
-            width: `${fl.scale * 0.8}%`,
-            height: `${fl.scale * 1.2}vh`,
-            opacity: fl.opacity * 0.85,
-            animation: `leaf-fall ${fl.duration + 3}s ease-in-out ${fl.delay + 1.5}s infinite`,
-            willChange: "transform",
-            rotate: `${fl.rotation + 120}deg`,
-          }}
-        >
-          <path
-            d={makeSmallLeafPath()}
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="0.7"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      ))}
-
-      {/* Dust/particle dots */}
       {dots.map((dot, i) => (
         <div
           key={`dot-${i}`}
