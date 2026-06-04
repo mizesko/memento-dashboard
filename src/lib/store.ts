@@ -34,7 +34,10 @@ export const useStore = create<State>()(
       paintedWeeks: [],
       tasks: [],
       notes: [],
-      toggleTheme: () => set((s) => ({ theme: s.theme === "dark" ? "light" : "dark" })),
+      toggleTheme: () =>
+        set((s) => ({
+          theme: s.theme === "dark" ? "light" : s.theme === "light" ? "sepia" : "dark",
+        })),
       setBirthDate: (d) => set({ birthDate: d }),
       togglePaintedWeek: (idx) =>
         set((s) => ({
