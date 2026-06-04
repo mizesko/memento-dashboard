@@ -5,6 +5,8 @@ import { LifeCalendar } from "@/components/memento/LifeCalendar";
 import { Hourglass } from "@/components/memento/Hourglass";
 import { Kanban } from "@/components/memento/Kanban";
 import { Notes } from "@/components/memento/Notes";
+import { WindLines } from "@/components/memento/WindLines";
+import { OliveBranches } from "@/components/memento/OliveBranches";
 
 export const Route = createFileRoute("/")({
   head: () => ({
