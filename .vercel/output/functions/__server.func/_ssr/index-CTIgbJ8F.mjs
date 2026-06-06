@@ -6,7 +6,7 @@ import { c as cva } from "../_libs/class-variance-authority.mjs";
 import { c as clsx } from "../_libs/clsx.mjs";
 import { t as twMerge } from "../_libs/tailwind-merge.mjs";
 import { R as Root } from "../_libs/radix-ui__react-label.mjs";
-import { u as useSensors, a as useSensor, D as DndContext, b as DragOverlay, P as PointerSensor, c as useDroppable, d as useDraggable } from "../_libs/dnd-kit__core.mjs";
+import { u as useSensors, a as useSensor, D as DndContext, b as DragOverlay, T as TouchSensor, M as MouseSensor, c as useDroppable, d as useDraggable } from "../_libs/dnd-kit__core.mjs";
 import { A as AnimatePresence, m as motion } from "../_libs/framer-motion.mjs";
 import { S as Sun, C as Coffee, b as Moon, c as Plus, T as Trash2, X } from "../_libs/lucide-react.mjs";
 import "../_libs/tanstack__router-core.mjs";
@@ -350,6 +350,7 @@ function TaskCard({ task }) {
       ...attributes,
       ...listeners,
       className: `group flex w-full max-w-full items-start justify-between gap-2 overflow-hidden rounded-md border border-border bg-card p-3 text-sm shadow-sm transition ${isDragging ? "opacity-30" : "hover:border-foreground/40"}`,
+      style: { touchAction: "none" },
       children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx(
           "span",
@@ -396,7 +397,10 @@ function Kanban() {
   const { tasks, addTask, moveTask } = useStore();
   const [title, setTitle] = reactExports.useState("");
   const [activeId, setActiveId] = reactExports.useState(null);
-  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 4 } }));
+  const sensors = useSensors(
+    useSensor(MouseSensor, { activationConstraint: { distance: 8 } }),
+    useSensor(TouchSensor, { activationConstraint: { delay: 250, tolerance: 8 } })
+  );
   const onDragStart = (e) => setActiveId(String(e.active.id));
   const onDragEnd = (e) => {
     setActiveId(null);
@@ -952,7 +956,7 @@ function LoadingScreen({ onComplete, onStart }) {
                   /* @__PURE__ */ jsxRuntimeExports.jsx(
                     "path",
                     {
-                      d: "M40 40 C40 110 95 145 95 160 C95 175 40 210 40 280\n                   L160 280 C160 210 105 175 105 160 C105 145 160 110 160 40 Z",
+                      d: "M40 40 C40 110 95 145 95 160 C95 175 40 210 40 280\r\n                   L160 280 C160 210 105 175 105 160 C105 145 160 110 160 40 Z",
                       fill: "url(#glassL)",
                       stroke: "currentColor",
                       strokeOpacity: "0.45",

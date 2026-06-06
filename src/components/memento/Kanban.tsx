@@ -2,7 +2,8 @@ import { useState } from "react";
 import {
   DndContext,
   DragOverlay,
-  PointerSensor,
+  MouseSensor,
+  TouchSensor,
   useSensor,
   useSensors,
   useDraggable,
@@ -32,6 +33,7 @@ function TaskCard({ task }: { task: Task }) {
       className={`group flex w-full max-w-full items-start justify-between gap-2 overflow-hidden rounded-md border border-border bg-card p-3 text-sm shadow-sm transition ${
         isDragging ? "opacity-30" : "hover:border-foreground/40"
       }`}
+      style={{ touchAction: "none" }}
     >
       <span
         className="min-w-0 flex-1 cursor-grab whitespace-normal break-words"
@@ -79,7 +81,10 @@ export function Kanban() {
   const { tasks, addTask, moveTask } = useStore();
   const [title, setTitle] = useState("");
   const [activeId, setActiveId] = useState<string | null>(null);
-  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 4 } }));
+  const sensors = useSensors(
+    useSensor(MouseSensor, { activationConstraint: { distance: 8 } }),
+    useSensor(TouchSensor, { activationConstraint: { delay: 250, tolerance: 8 } }),
+  );
 
   const onDragStart = (e: DragStartEvent) => setActiveId(String(e.active.id));
   const onDragEnd = (e: DragEndEvent) => {

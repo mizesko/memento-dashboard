@@ -139,7 +139,7 @@ const Route$1 = createFileRoute("/contato")({
   }),
   component: lazyRouteComponent($$splitComponentImporter$1, "component")
 });
-const $$splitComponentImporter = () => import("./index-Co1isky_.mjs");
+const $$splitComponentImporter = () => import("./index-CTIgbJ8F.mjs");
 const Route = createFileRoute("/")({
   head: () => ({
     meta: [{

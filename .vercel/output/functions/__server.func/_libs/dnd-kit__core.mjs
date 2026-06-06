@@ -3320,7 +3320,8 @@ const DragOverlay = /* @__PURE__ */ React.memo((_ref) => {
 });
 export {
   DndContext as D,
-  PointerSensor as P,
+  MouseSensor as M,
+  TouchSensor as T,
   useSensor as a,
   DragOverlay as b,
   useDroppable as c,
